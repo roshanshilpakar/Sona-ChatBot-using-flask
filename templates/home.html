@@ -1,0 +1,85 @@
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+        <title>Sona Chatbot</title>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <link rel="icon" href="{{ url_for('static', filename='images/logo.jpg') }}" type="image/gif" sizes="12x20">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+	</head>
+
+	<body>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <base target="_blank" rel="noopener noreferrer">
+		<div class="container-fluid h-100">
+			<div class="row justify-content-center h-100">
+				<div class="col-xs-12 col-sm-12 col-md-6 col-xl-8 chat">
+					<div class="card">
+						<div class="card-header msg_head">
+							<div class="d-flex bd-highlight">
+								<div class="user_info">
+									<span>Sona ChatBot</span>
+								</div>
+							</div>
+						</div>
+						<div class="card-body msg_card_body" id="chatbox">
+							<div class="d-flex justify-content-start mb-4">
+
+								<div class="msg_cotainer">
+									Welcome to Sona Family. What is your name ?
+								</div>
+							</div>
+						</div>
+						<div class="card-footer">
+							<div class="input-group">
+								<input id="textInput" name="" class="form-control type_msg" placeholder="Type your message...">
+								<div class="input-group-append">
+									<button onclick="getBotResponse()" class="btn btn-warning btn-lg btn-block" id="btn-chat">Send</button>
+                </div>
+								<script>
+									function getBotResponse() {
+									  var rawText = $("#textInput").val();
+									  var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send"><span>' + rawText + "</span></div></div>";
+									  $("#textInput").val("");
+									  var value = document.getElementById("textInput").value;
+    								  document.getElementById("textInput").value = value.substr(0, value.length - 1);
+									  $("#chatbox").append(userHtml);
+									  var objDiv = document.getElementById("chatbox");
+									  objDiv.scrollTop = objDiv.scrollHeight;
+									  $.get("/get", { msg: rawText }).done(function(data) {
+										var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="msg_cotainer"><span>' + data + "</span></div></div>";
+										$("#chatbox").append(botHtml);
+										var objDiv = document.getElementById("chatbox");
+									  	objDiv.scrollTop = objDiv.scrollHeight;
+										//document
+										//  .getElementById("chatbox")
+										//  .scrollIntoView({ block: "start", behavior: "smooth" });
+									  });
+									var objDiv = document.getElementById("chatbox");
+									objDiv.scrollTop = objDiv.scrollHeight;
+
+									}
+									$("#textInput").keypress(function(e) {
+									  if (e.which == 13) {
+										getBotResponse();
+									  }
+									});
+								  </script>
+							</div>
+						</div>
+					</div>
+                </div>
+
+			</div>
+		</div>
+	</body>
+</html>
